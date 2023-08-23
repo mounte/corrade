@@ -531,7 +531,7 @@ template<class T> Optional<T>& Optional<T>::operator=(Optional<T>&& other) noexc
         swap(other._value, _value);
     } else {
         if(_set) _value.~T();
-        if((_set = other._set))
+        if(!!(_set = other._set)) /* Extra !! needed for MSVC to silence C4706 */
             /* Can't use {}, see the GCC 4.8-specific overload for details */
             #if defined(CORRADE_TARGET_GCC) && !defined(CORRADE_TARGET_CLANG) && __GNUC__ < 5
             Implementation::construct(_value, Utility::move(other._value));
